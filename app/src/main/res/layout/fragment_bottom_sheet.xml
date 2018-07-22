@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <ImageView
+        android:id="@+id/iv_drag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_drag_handle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/ll_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ll_right"
+        app:layout_constraintTop_toBottomOf="@id/iv_drag">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Privacy Policy"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintWidth_percent="50"
+        app:layout_constraintLeft_toRightOf="@id/ll_left"
+        app:layout_constraintTop_toBottomOf="@id/iv_drag">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Topup"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Setting"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terms of service"
+            android:textColor="@color/secondaryTextColor"
+            android:background="@drawable/bg_border"
+            android:gravity="left"
+            android:padding="@dimen/margin_medium_2"/>
+
+
+    </LinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_right"
+        android:padding="@dimen/margin_small">
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Privacy Policy"
+        android:textColor="@color/secondaryTextColor"
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="."
+        android:textStyle="bold"
+        android:textColor="@color/secondaryTextColor"
+        android:gravity="center"
+        android:layout_weight="0"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Terms of Service"
+        android:textColor="@color/secondaryTextColor"
+        android:gravity="center"
+        android:layout_weight="1"/>
+
+    </LinearLayout>-->
+
+
+
+</android.support.constraint.ConstraintLayout>
