@@ -1,4 +1,4 @@
-package com.nyi.ybspayment
+package com.nyi.ybspayment.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +9,7 @@ import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
+import com.nyi.ybspayment.R
 
 /**
  * Created by IN-3442 on 20-Jul-18.

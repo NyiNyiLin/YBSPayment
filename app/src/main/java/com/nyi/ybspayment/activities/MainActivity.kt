@@ -1,31 +1,26 @@
-package com.nyi.ybspayment
+package com.nyi.ybspayment.activities
 
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialogFragment
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.widget.NestedScrollView
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
-import com.budiyev.android.codescanner.DecodeCallback
-import com.budiyev.android.codescanner.ErrorCallback
-import com.budiyev.android.codescanner.ScanMode
+import com.nyi.ybspayment.R
+import com.nyi.ybspayment.db.AppDatabase
+import com.nyi.ybspayment.db.DBWorkerThread
+import com.nyi.ybspayment.db.Transaction
 import com.nyi.ybspayment.fragments.BottomSheetFragment
-
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     var PERMISSIONS_CAMERA = 1;
@@ -92,6 +87,35 @@ class MainActivity : AppCompatActivity() {
         } else {
             // Permission has already been granted
         }
+    }
+
+    /*
+        Room database testing
+     */
+    private lateinit var mDbWorkerThread: DBWorkerThread
+    private val mUiHandler = Handler()
+    private var mDb: AppDatabase? = null
+
+    fun insertTransactionInDb(transaction: Transaction) {
+        mDbWorkerThread = DBWorkerThread("dbWorkerThread")
+        mDbWorkerThread.start()
+        mDb = AppDatabase.getInstance(this)
+
+        val task = Runnable { mDb?.TransactionDao()?.insert(transaction) }
+        mDbWorkerThread.postTask(task)
+    }
+    private fun fetchTransactionDataFromDb() {
+        val task = Runnable {
+            val transactionData = mDb?.TransactionDao()?.getAll()
+            mUiHandler.post({
+                if (transactionData == null || transactionData?.size == 0) {
+
+                } else {
+
+                }
+            })
+        }
+        mDbWorkerThread.postTask(task)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
