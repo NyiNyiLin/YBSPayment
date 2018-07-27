@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
@@ -20,6 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /*kapt {
+        generateStubs = true
+        javacOptions {
+            option("-Xmaxerrs", 500)
+        }
+    }*/
 }
 
 dependencies {
@@ -37,5 +44,10 @@ dependencies {
     implementation 'com.budiyev.android:code-scanner:1.9.1'
 
     implementation "android.arch.persistence.room:runtime:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+
+    /*annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"*/
+    /*compile "android.arch.persistence.room:runtime:1.1.0-alpha2"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.0-alpha2"
+    kapt "android.arch.persistence.room:compiler:1.1.0-alpha2"*/
 }

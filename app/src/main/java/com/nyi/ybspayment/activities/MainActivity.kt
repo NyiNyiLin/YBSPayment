@@ -9,6 +9,7 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -17,9 +18,7 @@ import android.widget.Toast
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
-import com.nyi.ybspayment.db.AppDatabase
-import com.nyi.ybspayment.db.DBWorkerThread
-import com.nyi.ybspayment.db.Transaction
+import com.nyi.ybspayment.db.*
 import com.nyi.ybspayment.fragments.BottomSheetFragment
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         //mBottomSheetBehaviour = BottomSheetBehavior.from(nestedScrollView);
 
 
-
         btnPay.setOnClickListener {
             //scannerView.visibility = View.VISIBLE;
 
@@ -59,6 +57,8 @@ class MainActivity : AppCompatActivity() {
             var bottomSheetFragment = BottomSheetFragment();
             bottomSheetFragment.show(supportFragmentManager, "TAG");
         }
+
+        testDB()
     }
 
     fun requestPermission(){
@@ -89,17 +89,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun testDB(){
+        /*insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
+        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
+        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
+        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
+
+        fetchTransactionDataFromDb()*/
+
+        var transactionDBHelper : TransactionDBHelper
+        transactionDBHelper = TransactionDBHelper(this)
+
+        /*transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
+        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
+        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
+        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
+        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
+        */
+        val transactionList : List<TransactionModel> = transactionDBHelper.readAllTransaction()
+
+        for(tran in transactionList){
+            Log.i("Payment", tran.transactionID.toString())
+        }
+    }
+
     /*
         Room database testing
      */
     private lateinit var mDbWorkerThread: DBWorkerThread
     private val mUiHandler = Handler()
-    private var mDb: AppDatabase? = null
+    private var mDb: AppDatabaseJava? = null
 
     fun insertTransactionInDb(transaction: Transaction) {
         mDbWorkerThread = DBWorkerThread("dbWorkerThread")
         mDbWorkerThread.start()
-        mDb = AppDatabase.getInstance(this)
+        mDb = AppDatabaseJava.getInstance(applicationContext)
 
         val task = Runnable { mDb?.TransactionDao()?.insert(transaction) }
         mDbWorkerThread.postTask(task)
@@ -109,7 +133,9 @@ class MainActivity : AppCompatActivity() {
             val transactionData = mDb?.TransactionDao()?.getAll()
             mUiHandler.post({
                 if (transactionData == null || transactionData?.size == 0) {
-
+                    for(tran in transactionData.orEmpty()){
+                        Log.i("Payment", tran.toString())
+                    }
                 } else {
 
                 }

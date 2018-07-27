@@ -18,9 +18,9 @@ data class Transaction(
     @ColumnInfo(name = "fee")val fee : Int = 0
 ){
 
-
     constructor() : this(null, "", "", "") {
         // constructor body
     }
+
 
 }
