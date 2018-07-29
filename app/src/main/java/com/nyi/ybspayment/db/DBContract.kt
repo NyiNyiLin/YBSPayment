@@ -18,4 +18,14 @@ object DBContract {
             val COLUMN_IS_UPLOADED = "is_uploaded"
         }
     }
+
+    class UserEntry : BaseColumns {
+        companion object {
+            val TABLE_NAME = "user_table"
+            val COLUMN_ID = "id"
+            val COLUMN_USER_ID = "user_id"
+            val COLUMN_PHONE_NO = "phone_no"
+            val COLUMN_AVAIL_AMOUNT = "avail_amount"
+        }
+    }
 }

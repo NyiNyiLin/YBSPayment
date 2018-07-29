@@ -7,20 +7,24 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import com.nyi.ybspayment.db.model.TransactionModel
+import com.nyi.ybspayment.db.model.UserModel
 
 /**
  * Created by IN-3442 on 27-Jul-18.
  */
-class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(SQL_CREATE_ENTRIES)
+        db.execSQL(SQL_CREATE_TRANSACTION_TABLE_ENTRIES)
+        db.execSQL(SQL_CREATE_USER_TABLE_ENTRIES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES)
+        db.execSQL(SQL_DELETE_TRANSACTION_TABLE_ENTRIES)
+        db.execSQL(SQL_DELETE_USER_TABLE_ENTRIES)
         onCreate(db)
     }
 
@@ -29,18 +33,11 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun insertUser(transaction: TransactionModel): Boolean {
+    fun insertTransaction(transaction: TransactionModel): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase
 
-        // Create a new map of values, where column names are the keys
-        val values = ContentValues()
-        //TransactionModel.cvToModel(values)
-        values.put(DBContract.TransactionEntry.COLUMN_PHONE_No, transaction.phNo)
-        values.put(DBContract.TransactionEntry.COLUMN_BUS_LINE, transaction.busLine)
-        values.put(DBContract.TransactionEntry.COLUMN_CAR_NO, transaction.carNo)
-        values.put(DBContract.TransactionEntry.COLUMN_TIME, transaction.time)
-        values.put(DBContract.TransactionEntry.COLUMN_IS_UPLOADED, transaction.isUploaded)
+        val values = TransactionModel.modelToContentValue(transaction)
 
         // Insert the new row, returning the primary key value of the new row
         val newRowId = db.insert(DBContract.TransactionEntry.TABLE_NAME, null, values)
@@ -62,7 +59,7 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         return true
     }
 
-    fun readTransaction(transactionID: String): ArrayList<TransactionModel> {
+    fun readTransaction(transactionID: Int): ArrayList<TransactionModel> {
         val transactionList = ArrayList<TransactionModel>()
         val db = writableDatabase
         var cursor: Cursor? = null
@@ -70,7 +67,7 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             cursor = db.rawQuery("select * from " + DBContract.TransactionEntry.TABLE_NAME + " WHERE " + DBContract.TransactionEntry.COLUMN_TRANSACTION_ID + "='" + transactionID + "'", null)
         } catch (e: SQLiteException) {
             // if table not yet present, create it
-            db.execSQL(SQL_CREATE_ENTRIES)
+            db.execSQL(SQL_CREATE_TRANSACTION_TABLE_ENTRIES)
             return ArrayList()
         }
 
@@ -90,7 +87,7 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         try {
             cursor = db.rawQuery("select * from " + DBContract.TransactionEntry.TABLE_NAME, null)
         } catch (e: SQLiteException) {
-            db.execSQL(SQL_CREATE_ENTRIES)
+            db.execSQL(SQL_CREATE_TRANSACTION_TABLE_ENTRIES)
             return ArrayList()
         }
 
@@ -103,12 +100,56 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
         return transactionList
     }
 
+    fun readAllUser() : UserModel{
+        var db = writableDatabase
+        var user : UserModel = UserModel()
+
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery("select * from " + DBContract.UserEntry.TABLE_NAME, null)
+        } catch (e: SQLiteException) {
+            db.execSQL(SQL_CREATE_USER_TABLE_ENTRIES)
+            return UserModel()
+        }
+
+        if (cursor!!.moveToFirst()) {
+            while (cursor.isAfterLast == false) {
+                user = UserModel.cursorToModel(cursor)
+                cursor.moveToNext()
+            }
+        }
+        return user
+    }
+
+    @Throws(SQLiteConstraintException::class)
+    fun insertUser(user: UserModel): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+
+        val values = UserModel.modelToContentValue(user)
+
+        // Insert the new row, returning the primary key value of the new row
+        val newRowId = db.insert(DBContract.UserEntry.TABLE_NAME, null, values)
+
+        return true
+    }
+
+    @Throws(SQLiteConstraintException::class)
+    fun updateAvailAmount(userID : String, availAmount : Int){
+        var db = writableDatabase
+
+        val cv : ContentValues = ContentValues()
+        cv.put(DBContract.UserEntry.COLUMN_AVAIL_AMOUNT, availAmount)
+
+        db.update(DBContract.UserEntry.TABLE_NAME, cv, DBContract.UserEntry.COLUMN_USER_ID + " = ?", arrayOf(userID))
+    }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
         val DATABASE_NAME = "ybspayment.db"
 
-        private val SQL_CREATE_ENTRIES =
+        private val SQL_CREATE_TRANSACTION_TABLE_ENTRIES =
                 "CREATE TABLE " + DBContract.TransactionEntry.TABLE_NAME + " (" +
                         DBContract.TransactionEntry.COLUMN_TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         DBContract.TransactionEntry.COLUMN_PHONE_No + " TEXT," +
@@ -117,6 +158,16 @@ class TransactionDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
                         DBContract.TransactionEntry.COLUMN_TIME + " TEXT," +
                         DBContract.TransactionEntry.COLUMN_IS_UPLOADED + " INTEGER)"
 
-        private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME
+        private val SQL_DELETE_TRANSACTION_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME
+
+        private val SQL_CREATE_USER_TABLE_ENTRIES =
+                "CREATE TABLE " + DBContract.UserEntry.TABLE_NAME + " (" +
+                        DBContract.UserEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        DBContract.UserEntry.COLUMN_USER_ID + " TEXT," +
+                        DBContract.UserEntry.COLUMN_PHONE_NO + " TEXT," +
+                        DBContract.UserEntry.COLUMN_AVAIL_AMOUNT + " INTEGER)"
+
+        private val SQL_DELETE_USER_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME
+
     }
 }

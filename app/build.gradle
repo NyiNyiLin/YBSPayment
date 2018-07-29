@@ -45,6 +45,8 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$room_version"
 
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
     /*annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"*/
     /*compile "android.arch.persistence.room:runtime:1.1.0-alpha2"

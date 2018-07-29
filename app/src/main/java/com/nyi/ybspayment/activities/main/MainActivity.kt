@@ -1,54 +1,61 @@
-package com.nyi.ybspayment.activities
+package com.nyi.ybspayment.activities.main
 
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
-import com.nyi.ybspayment.db.*
+import com.nyi.ybspayment.activities.scanner.ScannerActivity
+import com.nyi.ybspayment.db.model.UserModel
 import com.nyi.ybspayment.fragments.BottomSheetFragment
+import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContract.MainView {
+
     var PERMISSIONS_CAMERA = 1;
 
     private lateinit var scannerView : CodeScannerView;
     private lateinit var codeScanner: CodeScanner
+    private lateinit var mainPresenter: MainPresenter
 
     private lateinit var mBottomSheetBehaviour: BottomSheetBehavior<*>
+
+    //View
+    private lateinit var btnPay : Button
+    private lateinit var menu : ImageView
+    private lateinit var tvUserId : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+        btnPay = findViewById<Button>(R.id.btn_pay);
+        menu = findViewById<ImageView>(R.id.iv_menu);
+        tvUserId = findViewById<TextView>(R.id.tv_user_id)
+
+        mainPresenter = MainPresenter(this)
+        mainPresenter.init()
 
         requestPermission();
-
-        val btnPay = findViewById<Button>(R.id.btn_pay);
-        val menu = findViewById<ImageView>(R.id.iv_menu);
 
         //BottomSheet
         //val nestedScrollView = findViewById<NestedScrollView>(R.id.nestedScrollView);
         //mBottomSheetBehaviour = BottomSheetBehavior.from(nestedScrollView);
 
-
         btnPay.setOnClickListener {
-            //scannerView.visibility = View.VISIBLE;
-
-            val intent = Intent(this@MainActivity, ScannerActivity::class.java)
-            startActivity(intent)
+            mainPresenter.clickPay()
         }
 
         menu.setOnClickListener{
@@ -57,8 +64,21 @@ class MainActivity : AppCompatActivity() {
             var bottomSheetFragment = BottomSheetFragment();
             bottomSheetFragment.show(supportFragmentManager, "TAG");
         }
+    }
 
-        testDB()
+    override fun updateAvailAmount(availAmount: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showUserInfo(user: UserModel) {
+        tvUserId.setText(user.userID)
+        tv_remaining_balance.setText(user.availableAMount.toString())
+    }
+
+    override fun goScannerActivity() {
+        //scannerView.visibility = View.VISIBLE;
+        val intent = Intent(this@MainActivity, ScannerActivity::class.java)
+        startActivity(intent)
     }
 
     fun requestPermission(){
@@ -89,61 +109,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun testDB(){
-        /*insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
-        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
-        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
-        insertTransactionInDb(Transaction(null, "0924", "21", "3N/123"))
-
-        fetchTransactionDataFromDb()*/
-
-        var transactionDBHelper : TransactionDBHelper
-        transactionDBHelper = TransactionDBHelper(this)
-
-        /*transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        transactionDBHelper.insertUser(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        */
-        val transactionList : List<TransactionModel> = transactionDBHelper.readAllTransaction()
-
-        for(tran in transactionList){
-            Log.i("Payment", tran.transactionID.toString())
-        }
-    }
-
-    /*
-        Room database testing
-     */
-    private lateinit var mDbWorkerThread: DBWorkerThread
-    private val mUiHandler = Handler()
-    private var mDb: AppDatabaseJava? = null
-
-    fun insertTransactionInDb(transaction: Transaction) {
-        mDbWorkerThread = DBWorkerThread("dbWorkerThread")
-        mDbWorkerThread.start()
-        mDb = AppDatabaseJava.getInstance(applicationContext)
-
-        val task = Runnable { mDb?.TransactionDao()?.insert(transaction) }
-        mDbWorkerThread.postTask(task)
-    }
-    private fun fetchTransactionDataFromDb() {
-        val task = Runnable {
-            val transactionData = mDb?.TransactionDao()?.getAll()
-            mUiHandler.post({
-                if (transactionData == null || transactionData?.size == 0) {
-                    for(tran in transactionData.orEmpty()){
-                        Log.i("Payment", tran.toString())
-                    }
-                } else {
-
-                }
-            })
-        }
-        mDbWorkerThread.postTask(task)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -159,5 +124,4 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
