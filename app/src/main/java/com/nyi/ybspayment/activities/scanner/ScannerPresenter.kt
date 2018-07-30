@@ -1,5 +1,7 @@
 package com.nyi.ybspayment.activities.scanner
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import com.google.gson.Gson
 import com.nyi.ybspayment.YbsPayment
@@ -17,10 +19,13 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
         val msg = """
         {
             "carNo" : "3N/123",
-            "fee" : 300
+            "fee" : 300,
+            "busLine" : "37"
         }
         """
 
+        //TODO
+        //replace with actual scan result
         scanResult = gson.fromJson(msg, ScanResult::class.java)
         Log.d(Constants.LOG, "ScannerPresenter " + scanResult.fee)
 
@@ -31,6 +36,13 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
 
         }else{
             dbHelper.updateAvailAmount(user.userID, remainingAmount)
+
+            val intent = Intent()
+            intent.putExtra(Constants.argFee, scanResult.fee)
+            intent.putExtra(Constants.argbusLine, scanResult.busLine)
+            intent.putExtra(Constants.argbusNo, scanResult.carNo)
+
+            scannerView.finish(Activity.RESULT_OK, intent);
         }
 
     }

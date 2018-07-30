@@ -6,5 +6,10 @@ package com.nyi.ybspayment.utils
 class Constants {
     companion object {
         val LOG = "Ybs Payment"
+        val RequestToScannerActivityCode = 110
+
+        val argFee = "fee"
+        val argbusLine = "busLine"
+        val argbusNo = "busNo"
     }
 }

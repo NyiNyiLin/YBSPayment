@@ -1,6 +1,8 @@
 package com.nyi.ybspayment.activities.main
 
 import android.Manifest
+import android.app.Activity
+import android.app.DialogFragment
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,12 +15,15 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
 import com.nyi.ybspayment.activities.scanner.ScannerActivity
 import com.nyi.ybspayment.db.model.UserModel
 import com.nyi.ybspayment.fragments.BottomSheetFragment
+import com.nyi.ybspayment.fragments.TranSuccessDiaFragment
+import com.nyi.ybspayment.utils.Constants
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), MainContract.MainView {
@@ -78,7 +83,20 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
     override fun goScannerActivity() {
         //scannerView.visibility = View.VISIBLE;
         val intent = Intent(this@MainActivity, ScannerActivity::class.java)
-        startActivity(intent)
+        //startActivity(intent)
+        startActivityForResult(intent, Constants.RequestToScannerActivityCode)
+    }
+
+    override fun successDiaView(fee : Int, busNo : String, busLine : String) {
+        Toast.makeText(applicationContext, "Success ", Toast.LENGTH_SHORT).show()
+        val successDiaFragment : DialogFragment = TranSuccessDiaFragment.newInstance(fee, busNo, busLine)
+        successDiaFragment.isCancelable = false
+        successDiaFragment.show(fragmentManager, "Success")
+
+    }
+
+    override fun notEnoughBalanceDiaView() {
+
     }
 
     fun requestPermission(){
@@ -109,6 +127,14 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == Constants.RequestToScannerActivityCode){
+            mainPresenter.resultFromScannerActivity(resultCode, data)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -123,5 +149,10 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainPresenter.init()
     }
 }

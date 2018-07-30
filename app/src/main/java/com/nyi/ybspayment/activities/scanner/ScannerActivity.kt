@@ -1,5 +1,6 @@
 package com.nyi.ybspayment.activities.scanner
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -19,6 +20,7 @@ import com.nyi.ybspayment.vo.ScanResult
  * Created by IN-3442 on 20-Jul-18.
  */
 class ScannerActivity : AppCompatActivity(), ScannerContract.ScannerView{
+
     private lateinit var codeScanner: CodeScanner
     private lateinit var scannerPresenter: ScannerPresenter
 
@@ -60,8 +62,11 @@ class ScannerActivity : AppCompatActivity(), ScannerContract.ScannerView{
             codeScanner.startPreview()
         }
 
+    }
 
-
+    override fun finish(resultCode: Int, intent : Intent) {
+        setResult(resultCode, intent)
+        this.finish()
     }
 
     override fun onResume() {
