@@ -29,18 +29,16 @@ class YbsPayment : Application() {
     fun insertDummyData(){
         var dBHelper : DBHelper
         dBHelper = DBHelper(this)
-/*
 
         //dummy transaction
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 1))
-
-        //dummy user
-        dBHelper.insertUser(UserModel("Nyi123", "0925412999", 20000))
+        /*dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 200, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 100, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 300, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 200, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 300, 1))
 */
+        //dummy user
+        //dBHelper.insertUser(UserModel("Nyi123", "0925412999", 20000))
 
         //retrieve dummy user
         var user = dBHelper.readAllUser()

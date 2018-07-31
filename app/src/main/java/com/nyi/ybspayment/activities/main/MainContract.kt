@@ -9,6 +9,8 @@ interface MainContract {
         fun setUser(user : UserModel)
         fun init()
         fun clickPay()
+        fun clickHistory()
+        fun clickTopup()
         fun resultFromScannerActivity(resultCode : Int, data : Intent?)
     }
 
@@ -16,7 +18,9 @@ interface MainContract {
         fun updateAvailAmount(availAmount : Int)
         fun showUserInfo(user : UserModel)
         fun goScannerActivity()
-        fun notEnoughBalanceDiaView()
+        fun goTransactionHistoryActivity()
+        fun goTopUpActivity()
+        fun notEnoughBalanceDiaView(fee : Int)
         fun successDiaView(fee : Int, busNo : String, busLine : String)
     }
 }

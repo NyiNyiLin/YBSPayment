@@ -15,6 +15,7 @@ object DBContract {
             val COLUMN_BUS_LINE = "bus_line"
             val COLUMN_CAR_NO = "car_no"
             val COLUMN_TIME = "time"
+            val COLUMN_FEE = "fee"
             val COLUMN_IS_UPLOADED = "is_uploaded"
         }
     }

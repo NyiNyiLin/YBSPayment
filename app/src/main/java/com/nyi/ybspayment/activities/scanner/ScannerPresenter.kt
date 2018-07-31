@@ -18,8 +18,8 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
         Log.d(Constants.LOG, "ScannerPresenter " + message)
         val msg = """
         {
-            "carNo" : "3N/123",
-            "fee" : 300,
+            "carNo" : "3N/9898",
+            "fee" : 200,
             "busLine" : "37"
         }
         """
@@ -34,6 +34,11 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
 
         if(remainingAmount <= 0){
 
+            val intent = Intent()
+            intent.putExtra(Constants.argFee, scanResult.fee)
+
+            scannerView.finish(Activity.RESULT_CANCELED, intent);
+
         }else{
             dbHelper.updateAvailAmount(user.userID, remainingAmount)
 
@@ -44,6 +49,12 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
 
             scannerView.finish(Activity.RESULT_OK, intent);
         }
+
+    }
+
+    override fun init() {
+        val user = dbHelper.readAllUser()
+        scannerView.updateAvailBalance(user.availableAMount)
 
     }
 }

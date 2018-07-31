@@ -7,9 +7,9 @@ import com.nyi.ybspayment.db.DBContract
 /**
  * Created by IN-3442 on 27-Jul-18.
  */
-class TransactionModel(val phNo : String, val busLine : String, val carNo : String, val time : String, val isUploaded : Int) {
+class TransactionModel(val phNo : String, val busLine : String, val carNo : String, val time : String, val fee : Int, val isUploaded : Int) {
     var transactionID : Int? = null
-    constructor(transactionID : Int, phNo : String, busLine : String, carNo : String, time : String, isUploaded : Int) : this (phNo, busLine, carNo, time, isUploaded){
+    constructor(transactionID : Int, phNo : String, busLine : String, carNo : String, time : String, fee : Int, isUploaded : Int) : this (phNo, busLine, carNo, time, fee, isUploaded){
         this.transactionID = transactionID
 
     }
@@ -21,6 +21,7 @@ class TransactionModel(val phNo : String, val busLine : String, val carNo : Stri
             val carNo : String
             val busLine : String
             val time : String
+            val fee : Int
             val isUploaded : Int
 
             transactionID = cursor.getInt(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_TRANSACTION_ID))
@@ -28,9 +29,10 @@ class TransactionModel(val phNo : String, val busLine : String, val carNo : Stri
             carNo = cursor.getString(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_CAR_NO))
             busLine = cursor.getString(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_BUS_LINE))
             time = cursor.getString(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_TIME))
+            fee = cursor.getInt(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_FEE))
             isUploaded = cursor.getInt(cursor.getColumnIndex(DBContract.TransactionEntry.COLUMN_IS_UPLOADED))
 
-            return TransactionModel(transactionID, phNo, busLine, carNo, time, isUploaded)
+            return TransactionModel(transactionID, phNo, busLine, carNo, time, fee, isUploaded)
         }
 
         fun modelToContentValue(transaction : TransactionModel) : ContentValues{
@@ -41,6 +43,7 @@ class TransactionModel(val phNo : String, val busLine : String, val carNo : Stri
             values.put(DBContract.TransactionEntry.COLUMN_BUS_LINE, transaction.busLine)
             values.put(DBContract.TransactionEntry.COLUMN_CAR_NO, transaction.carNo)
             values.put(DBContract.TransactionEntry.COLUMN_TIME, transaction.time)
+            values.put(DBContract.TransactionEntry.COLUMN_FEE, transaction.fee)
             values.put(DBContract.TransactionEntry.COLUMN_IS_UPLOADED, transaction.isUploaded)
 
             return values

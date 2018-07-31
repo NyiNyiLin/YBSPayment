@@ -20,8 +20,10 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
 import com.nyi.ybspayment.activities.scanner.ScannerActivity
+import com.nyi.ybspayment.activities.transactionHistory.TransactionHistory
 import com.nyi.ybspayment.db.model.UserModel
 import com.nyi.ybspayment.fragments.BottomSheetFragment
+import com.nyi.ybspayment.fragments.TranFailDiaFragment
 import com.nyi.ybspayment.fragments.TranSuccessDiaFragment
 import com.nyi.ybspayment.utils.Constants
 import kotlinx.android.synthetic.main.content_main.*
@@ -40,7 +42,8 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
     private lateinit var btnPay : Button
     private lateinit var menu : ImageView
     private lateinit var tvUserId : TextView
-
+    private lateinit var tvTopUp : TextView
+    private lateinit var tvHistory : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,8 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
         btnPay = findViewById<Button>(R.id.btn_pay);
         menu = findViewById<ImageView>(R.id.iv_menu);
         tvUserId = findViewById<TextView>(R.id.tv_user_id)
+        tvTopUp = findViewById<TextView>(R.id.tv_main_topup)
+        tvHistory = findViewById<TextView>(R.id.tv_main_history)
 
         mainPresenter = MainPresenter(this)
         mainPresenter.init()
@@ -69,6 +74,11 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
             var bottomSheetFragment = BottomSheetFragment();
             bottomSheetFragment.show(supportFragmentManager, "TAG");
         }
+
+        tvHistory.setOnClickListener {
+            //Toast.makeText(applicationContext, "Clcik History", Toast.LENGTH_SHORT).show()
+            mainPresenter.clickHistory()
+        }
     }
 
     override fun updateAvailAmount(availAmount: Int) {
@@ -87,16 +97,27 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
         startActivityForResult(intent, Constants.RequestToScannerActivityCode)
     }
 
+    override fun goTransactionHistoryActivity() {
+        val intent = Intent(this@MainActivity, TransactionHistory::class.java)
+        startActivity(intent)
+    }
+
+    override fun goTopUpActivity() {
+
+    }
+
     override fun successDiaView(fee : Int, busNo : String, busLine : String) {
-        Toast.makeText(applicationContext, "Success ", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(applicationContext, "Success ", Toast.LENGTH_SHORT).show()
         val successDiaFragment : DialogFragment = TranSuccessDiaFragment.newInstance(fee, busNo, busLine)
         successDiaFragment.isCancelable = false
         successDiaFragment.show(fragmentManager, "Success")
 
     }
 
-    override fun notEnoughBalanceDiaView() {
-
+    override fun notEnoughBalanceDiaView(fee : Int) {
+        val failDialog : DialogFragment = TranFailDiaFragment.newInstance(fee)
+        failDialog.isCancelable = false
+        failDialog.show(fragmentManager, "fail")
     }
 
     fun requestPermission(){

@@ -156,6 +156,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                         DBContract.TransactionEntry.COLUMN_BUS_LINE + " TEXT," +
                         DBContract.TransactionEntry.COLUMN_CAR_NO + " TEXT," +
                         DBContract.TransactionEntry.COLUMN_TIME + " TEXT," +
+                        DBContract.TransactionEntry.COLUMN_FEE + " INTEGER," +
                         DBContract.TransactionEntry.COLUMN_IS_UPLOADED + " INTEGER)"
 
         private val SQL_DELETE_TRANSACTION_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME

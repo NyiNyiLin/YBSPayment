@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
@@ -23,13 +24,17 @@ class ScannerActivity : AppCompatActivity(), ScannerContract.ScannerView{
 
     private lateinit var codeScanner: CodeScanner
     private lateinit var scannerPresenter: ScannerPresenter
+    private lateinit var tvAvailBalance : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
+        tvAvailBalance = findViewById<TextView> (R.id.tv_scanner_avail)
+
         val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
 
         scannerPresenter = ScannerPresenter(this)
+        scannerPresenter.init()
 
         codeScanner = CodeScanner(this, scannerView)
 
@@ -67,6 +72,10 @@ class ScannerActivity : AppCompatActivity(), ScannerContract.ScannerView{
     override fun finish(resultCode: Int, intent : Intent) {
         setResult(resultCode, intent)
         this.finish()
+    }
+
+    override fun updateAvailBalance(avail: Int) {
+        tvAvailBalance.setText(avail.toString())
     }
 
     override fun onResume() {

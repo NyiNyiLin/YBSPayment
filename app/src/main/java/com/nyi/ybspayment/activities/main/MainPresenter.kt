@@ -13,7 +13,7 @@ class MainPresenter(val mainView : MainContract.MainView, val dbHelper: DBHelper
     override fun clickPay() {
         val user : UserModel = dbHelper.readAllUser()
         if(user.availableAMount < 200){
-            mainView.notEnoughBalanceDiaView()
+            mainView.notEnoughBalanceDiaView(user.availableAMount)
         }else {
             mainView.goScannerActivity()
         }
@@ -38,7 +38,17 @@ class MainPresenter(val mainView : MainContract.MainView, val dbHelper: DBHelper
             }
 
         }else{
-            mainView.notEnoughBalanceDiaView()
+            if(data != null) {
+                mainView.notEnoughBalanceDiaView(data.getIntExtra(Constants.argFee, 0))
+            }
         }
+    }
+
+    override fun clickHistory() {
+        mainView.goTransactionHistoryActivity()
+    }
+
+    override fun clickTopup() {
+
     }
 }

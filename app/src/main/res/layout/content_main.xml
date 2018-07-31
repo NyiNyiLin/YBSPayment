@@ -133,6 +133,7 @@
                 android:padding="@dimen/margin_small">
 
                 <TextView
+                    android:id="@+id/tv_main_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="History"
@@ -147,6 +148,7 @@
                     android:background="@color/primaryLightColor"/>
 
                 <TextView
+                    android:id="@+id/tv_main_topup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Topup"
