@@ -25,9 +25,19 @@
         <activity
             android:name=".activities.scanner.ScannerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.transactionHistory.TransactionHistory"
+        <activity
+            android:name=".activities.transactionHistory.TransactionHistory"
+            android:label="History"
+            android:parentActivityName=".activities.main.MainActivity" />
+        <activity
+            android:name=".activities.topup.TopupActivity"
+            android:label="@string/title_activity_topup"
             android:parentActivityName=".activities.main.MainActivity"
-            android:label="History"/>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nyi.ybspayment.activities.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

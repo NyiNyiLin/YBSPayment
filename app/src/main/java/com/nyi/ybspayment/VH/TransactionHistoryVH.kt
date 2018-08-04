@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.nyi.ybspayment.R
 import com.nyi.ybspayment.db.model.TransactionModel
+import com.nyi.ybspayment.utils.TimeUtil
 
 class TransactionHistoryVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
     lateinit var tvDate : TextView
@@ -22,7 +23,8 @@ class TransactionHistoryVH(itemView: View?) : RecyclerView.ViewHolder(itemView) 
     }
 
     fun bindVH(transaction : TransactionModel){
-        tvDate.setText(transaction.time)
+        tvDate.setText(TimeUtil.getDateFromString(transaction.time))
+        tvTime.setText(TimeUtil.getTimeFromString(transaction.time))
         tvFee.setText(transaction.fee.toString())
         tvBusLine.setText(transaction.busLine)
         tvCarNo.setText(transaction.carNo)

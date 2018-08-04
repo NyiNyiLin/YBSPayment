@@ -11,5 +11,11 @@ class Constants {
         val argFee = "fee"
         val argbusLine = "busLine"
         val argbusNo = "busNo"
+
+        val NOT_UPLOADED = 0
+        val ALREADY_UPLOADED = 1
+
+        val argTopupAMount = "argTopupAMount"
+        val RequestToTopupActivityCode = 111
     }
 }

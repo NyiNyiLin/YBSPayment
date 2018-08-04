@@ -12,6 +12,7 @@ interface MainContract {
         fun clickHistory()
         fun clickTopup()
         fun resultFromScannerActivity(resultCode : Int, data : Intent?)
+        fun resultFromTopupActivity(resultCode : Int, data : Intent?)
     }
 
     public interface MainView{
@@ -22,5 +23,6 @@ interface MainContract {
         fun goTopUpActivity()
         fun notEnoughBalanceDiaView(fee : Int)
         fun successDiaView(fee : Int, busNo : String, busLine : String)
+        fun topupSuccessDiaView(rechargeAmount : Int)
     }
 }

@@ -1,14 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.nyi.ybspayment.activities.main.MainActivity">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_transaction_history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_medium">
 
-</android.support.design.widget.CoordinatorLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transaction"
+            android:textStyle="normal"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/bg_history_transaction_press"
+            android:padding="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Up"
+            android:textStyle="normal"
+            android:textColor="@color/secondaryColor"
+            android:background="@drawable/bg_history_topup_unpress"
+            android:padding="@dimen/margin_medium"
+            android:layout_weight="2"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/primaryColor"
+        android:layout_marginLeft="@dimen/history_table_margin"
+        android:layout_marginRight="@dimen/history_table_margin"
+        android:padding="@dimen/margin_small">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Date/Time"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="Bus"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="Car No"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_item_tran_hist_fee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="Price"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_transaction_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rv_border"
+        android:layout_marginLeft="@dimen/history_table_margin"
+        android:layout_marginRight="@dimen/history_table_margin"
+        android:layout_marginBottom="@dimen/history_item_view_divide_width"/>
+
+</LinearLayout>

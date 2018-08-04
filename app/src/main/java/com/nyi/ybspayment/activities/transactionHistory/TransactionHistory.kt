@@ -28,7 +28,6 @@ class TransactionHistory : AppCompatActivity() {
         /*actionBar.setTitle("History")
         actionBar.setDisplayHomeAsUpEnabled(true)*/
 
-
         dbHelper = DBHelper(applicationContext)
 
         transactionList = dbHelper.readAllTransaction()

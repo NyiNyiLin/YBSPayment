@@ -9,6 +9,7 @@ import com.nyi.ybspayment.db.DBHelper
 import com.nyi.ybspayment.db.model.TransactionModel
 import com.nyi.ybspayment.db.model.UserModel
 import com.nyi.ybspayment.utils.Constants
+import com.nyi.ybspayment.utils.TimeUtil
 
 /**
  * Created by IN-3442 on 27-Jul-18.
@@ -30,12 +31,12 @@ class YbsPayment : Application() {
         var dBHelper : DBHelper
         dBHelper = DBHelper(this)
 
-        //dummy transaction
-        /*dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 200, 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 100, 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 300, 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 200, 1))
-        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "12/12/1996", 300, 1))
+/*        //dummy transaction
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "31.07.18 10:34 PM", 200, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "31.07.18 10:34 PM", 100, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "31.07.18 10:34 PM", 300, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "31.07.18 10:34 PM", 200, 1))
+        dBHelper.insertTransaction(TransactionModel("0924", "21", "3N/123", "31.07.18 10:34 PM", 300, 1))
 */
         //dummy user
         //dBHelper.insertUser(UserModel("Nyi123", "0925412999", 20000))
@@ -54,6 +55,10 @@ class YbsPayment : Application() {
 
         user = dBHelper.readAllUser()
         Log.i(Constants.LOG, "Afetr update " + user.id.toString() + " " + user.userID + " " + user.phNo + " " + user.availableAMount)
+
+        Log.i(Constants.LOG, TimeUtil.getCureenTime())
+        Log.i(Constants.LOG, TimeUtil.getDateFromString(TimeUtil.getCureenTime()))
+        Log.i(Constants.LOG, TimeUtil.getTimeFromString(TimeUtil.getCureenTime()))
 
     }
 

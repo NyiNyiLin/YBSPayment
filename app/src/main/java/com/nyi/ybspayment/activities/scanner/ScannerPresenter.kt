@@ -6,7 +6,9 @@ import android.util.Log
 import com.google.gson.Gson
 import com.nyi.ybspayment.YbsPayment
 import com.nyi.ybspayment.db.DBHelper
+import com.nyi.ybspayment.db.model.TransactionModel
 import com.nyi.ybspayment.utils.Constants
+import com.nyi.ybspayment.utils.TimeUtil
 import com.nyi.ybspayment.vo.ScanResult
 
 class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelper: DBHelper = DBHelper(YbsPayment.context)) : ScannerContract.ScannerPresenter {
@@ -41,6 +43,9 @@ class ScannerPresenter(val scannerView: ScannerContract.ScannerView, val dbHelpe
 
         }else{
             dbHelper.updateAvailAmount(user.userID, remainingAmount)
+            dbHelper.insertTransaction(TransactionModel(user.phNo, scanResult.busLine, scanResult.carNo, TimeUtil.getCureenTime(),
+                    scanResult.fee,
+                    Constants.NOT_UPLOADED))
 
             val intent = Intent()
             intent.putExtra(Constants.argFee, scanResult.fee)

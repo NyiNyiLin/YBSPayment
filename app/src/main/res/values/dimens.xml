@@ -23,4 +23,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="corner_history">4dp</dimen>
+    <dimen name="history_table_margin">4dp</dimen>
+    <dimen name="history_item_view_divide_width">1dp</dimen>
 </resources>

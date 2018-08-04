@@ -20,9 +20,11 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
 import com.nyi.ybspayment.activities.scanner.ScannerActivity
+import com.nyi.ybspayment.activities.topup.TopupActivity
 import com.nyi.ybspayment.activities.transactionHistory.TransactionHistory
 import com.nyi.ybspayment.db.model.UserModel
 import com.nyi.ybspayment.fragments.BottomSheetFragment
+import com.nyi.ybspayment.fragments.TopupSuccessDiaFragment
 import com.nyi.ybspayment.fragments.TranFailDiaFragment
 import com.nyi.ybspayment.fragments.TranSuccessDiaFragment
 import com.nyi.ybspayment.utils.Constants
@@ -79,6 +81,10 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
             //Toast.makeText(applicationContext, "Clcik History", Toast.LENGTH_SHORT).show()
             mainPresenter.clickHistory()
         }
+
+        tvTopUp.setOnClickListener {
+            mainPresenter.clickTopup()
+        }
     }
 
     override fun updateAvailAmount(availAmount: Int) {
@@ -103,7 +109,8 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
     }
 
     override fun goTopUpActivity() {
-
+        val intent = Intent(this@MainActivity, TopupActivity::class.java)
+        startActivityForResult(intent, Constants.RequestToTopupActivityCode)
     }
 
     override fun successDiaView(fee : Int, busNo : String, busLine : String) {
@@ -118,6 +125,12 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
         val failDialog : DialogFragment = TranFailDiaFragment.newInstance(fee)
         failDialog.isCancelable = false
         failDialog.show(fragmentManager, "fail")
+    }
+
+    override fun topupSuccessDiaView(rechargeAmount: Int) {
+        val topupSuccessDiaFragment : TopupSuccessDiaFragment = TopupSuccessDiaFragment.newInstance(rechargeAmount)
+        topupSuccessDiaFragment.isCancelable = false
+        topupSuccessDiaFragment.show(fragmentManager, "topup Success")
     }
 
     fun requestPermission(){
@@ -153,6 +166,8 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
 
         if(requestCode == Constants.RequestToScannerActivityCode){
             mainPresenter.resultFromScannerActivity(resultCode, data)
+        }else if(requestCode == Constants.RequestToTopupActivityCode){
+            mainPresenter.resultFromTopupActivity(resultCode, data)
         }
     }
 

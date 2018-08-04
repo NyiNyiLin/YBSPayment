@@ -44,11 +44,19 @@ class MainPresenter(val mainView : MainContract.MainView, val dbHelper: DBHelper
         }
     }
 
+    override fun resultFromTopupActivity(resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            if(data != null) {
+                mainView.topupSuccessDiaView(data.getIntExtra(Constants.argTopupAMount, 0))
+            }
+        }
+    }
+
     override fun clickHistory() {
         mainView.goTransactionHistoryActivity()
     }
 
     override fun clickTopup() {
-
+        mainView.goTopUpActivity()
     }
 }
