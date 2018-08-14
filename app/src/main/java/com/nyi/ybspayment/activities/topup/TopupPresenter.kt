@@ -6,7 +6,9 @@ import android.util.Log
 import com.google.gson.Gson
 import com.nyi.ybspayment.YbsPayment
 import com.nyi.ybspayment.db.DBHelper
+import com.nyi.ybspayment.db.model.TopupModel
 import com.nyi.ybspayment.utils.Constants
+import com.nyi.ybspayment.utils.TimeUtil
 import com.nyi.ybspayment.vo.ScanResult
 import com.nyi.ybspayment.vo.TopupScanResult
 
@@ -31,9 +33,16 @@ class TopupPresenter(val topupView: TopupContract.TopupView, val dbHelper: DBHel
         val newAmount = user.availableAMount + topupScanResult.rechargeAmount
 
         dbHelper.updateAvailAmount(user.userID, newAmount)
+        dbHelper.insertTopup(TopupModel(user.userID, topupScanResult.rechargeAmount, TimeUtil.getCureenTime()))
 
         val intent = Intent()
         intent.putExtra(Constants.argTopupAMount, topupScanResult.rechargeAmount)
+
+        /*val topupList : List<TopupModel> = dbHelper.readAllTopup()
+        Log.i(Constants.LOG, "history count " + topupList.size)
+        for(topup in topupList){
+            Log.i(Constants.LOG, "topup history " + topup.topupID.toString() + " " + topup.rechargeAmount + " " + topup.topupDate)
+        }*/
 
         topupView.finish(Activity.RESULT_OK, intent);
     }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import com.nyi.ybspayment.db.model.TopupModel
 import com.nyi.ybspayment.db.model.TransactionModel
 import com.nyi.ybspayment.db.model.UserModel
 
@@ -18,6 +19,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_TRANSACTION_TABLE_ENTRIES)
         db.execSQL(SQL_CREATE_USER_TABLE_ENTRIES)
+        db.execSQL(SQL_CREATE_TOP_UP_TABLE_ENTRIES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -25,6 +27,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_TRANSACTION_TABLE_ENTRIES)
         db.execSQL(SQL_DELETE_USER_TABLE_ENTRIES)
+        db.execSQL(SQL_DELETE_TOPUP_TABLE_ENTRIES)
         onCreate(db)
     }
 
@@ -46,7 +49,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun deleteUser(transactionId: String): Boolean {
+    fun deleteTransaction(transactionId: String): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase
         // Define 'where' part of query.
@@ -85,7 +88,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val db = writableDatabase
         var cursor: Cursor? = null
         try {
-            cursor = db.rawQuery("select * from " + DBContract.TransactionEntry.TABLE_NAME, null)
+            cursor = db.rawQuery("select * from " + DBContract.TransactionEntry.TABLE_NAME + " ORDER BY " + DBContract.TransactionEntry.COLUMN_TIME + " DESC ", null)
         } catch (e: SQLiteException) {
             db.execSQL(SQL_CREATE_TRANSACTION_TABLE_ENTRIES)
             return ArrayList()
@@ -144,6 +147,39 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.update(DBContract.UserEntry.TABLE_NAME, cv, DBContract.UserEntry.COLUMN_USER_ID + " = ?", arrayOf(userID))
     }
 
+    @Throws(SQLiteConstraintException::class)
+    fun insertTopup(topup: TopupModel): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+
+        val values = TopupModel.modelToContentValue(topup)
+
+        // Insert the new row, returning the primary key value of the new row
+        val newRowId = db.insert(DBContract.TopupEntry.TABLE_NAME, null, values)
+
+        return true
+    }
+
+    fun readAllTopup(): ArrayList<TopupModel> {
+        val topupList = ArrayList<TopupModel>()
+        val db = writableDatabase
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery("select * from " + DBContract.TopupEntry.TABLE_NAME + " ORDER BY " + DBContract.TopupEntry.COLUMN_CREATED_DATE + " DESC ", null)
+        } catch (e: SQLiteException) {
+            db.execSQL(SQL_CREATE_TOP_UP_TABLE_ENTRIES)
+            return ArrayList()
+        }
+
+        if (cursor!!.moveToFirst()) {
+            while (cursor.isAfterLast == false) {
+                topupList.add(TopupModel.cursorToModel(cursor))
+                cursor.moveToNext()
+            }
+        }
+        return topupList
+    }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
@@ -157,7 +193,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                         DBContract.TransactionEntry.COLUMN_CAR_NO + " TEXT," +
                         DBContract.TransactionEntry.COLUMN_TIME + " TEXT," +
                         DBContract.TransactionEntry.COLUMN_FEE + " INTEGER," +
-                        DBContract.TransactionEntry.COLUMN_IS_UPLOADED + " INTEGER)"
+                        DBContract.TransactionEntry.COLUMN_IS_UPLOADED + " INTEGER" +
+                        ")"
 
         private val SQL_DELETE_TRANSACTION_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME
 
@@ -166,9 +203,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                         DBContract.UserEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                         DBContract.UserEntry.COLUMN_USER_ID + " TEXT," +
                         DBContract.UserEntry.COLUMN_PHONE_NO + " TEXT," +
-                        DBContract.UserEntry.COLUMN_AVAIL_AMOUNT + " INTEGER)"
+                        DBContract.UserEntry.COLUMN_AVAIL_AMOUNT + " INTEGER," +
+                        DBContract.UserEntry.COLUMN_CREATED_DATE  + " TEXT" +
+                        ")"
 
-        private val SQL_DELETE_USER_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TransactionEntry.TABLE_NAME
+        private val SQL_DELETE_USER_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.UserEntry.TABLE_NAME
+
+        private val SQL_CREATE_TOP_UP_TABLE_ENTRIES =
+                "CREATE TABLE " + DBContract.TopupEntry.TABLE_NAME + " (" +
+                        DBContract.TopupEntry.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        DBContract.TopupEntry.COLUMN_USER_ID + " TEXT," +
+                        DBContract.TopupEntry.COLUMN_FEE + " INTEGER," +
+                        DBContract.TopupEntry.COLUMN_CREATED_DATE  + " TEXT" +
+                        ")"
+
+        private val SQL_DELETE_TOPUP_TABLE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TopupEntry.TABLE_NAME
 
     }
 }

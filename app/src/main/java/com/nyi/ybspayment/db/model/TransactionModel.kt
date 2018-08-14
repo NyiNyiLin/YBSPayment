@@ -9,9 +9,9 @@ import com.nyi.ybspayment.db.DBContract
  */
 class TransactionModel(val phNo : String, val busLine : String, val carNo : String, val time : String, val fee : Int, val isUploaded : Int) {
     var transactionID : Int? = null
+
     constructor(transactionID : Int, phNo : String, busLine : String, carNo : String, time : String, fee : Int, isUploaded : Int) : this (phNo, busLine, carNo, time, fee, isUploaded){
         this.transactionID = transactionID
-
     }
 
     companion object {

@@ -43,7 +43,7 @@ class YbsPayment : Application() {
 
         //retrieve dummy user
         var user = dBHelper.readAllUser()
-        Log.i(Constants.LOG, user.id.toString() + " " + user.userID + " " + user.phNo + " " + user.availableAMount)
+        Log.i(Constants.LOG, user.id.toString() + " " + user.userID + " " + user.phNo + " " + user.availableAMount + " " + user.createdDate)
 
         //retrieve dummy transaction
         val transactionList : List<TransactionModel> = dBHelper.readAllTransaction()

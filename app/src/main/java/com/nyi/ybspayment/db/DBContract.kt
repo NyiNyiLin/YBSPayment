@@ -17,6 +17,7 @@ object DBContract {
             val COLUMN_TIME = "time"
             val COLUMN_FEE = "fee"
             val COLUMN_IS_UPLOADED = "is_uploaded"
+            val COLUMN_CREATED_DATE = "created_date"
         }
     }
 
@@ -27,6 +28,17 @@ object DBContract {
             val COLUMN_USER_ID = "user_id"
             val COLUMN_PHONE_NO = "phone_no"
             val COLUMN_AVAIL_AMOUNT = "avail_amount"
+            val COLUMN_CREATED_DATE = "createDate"
+        }
+    }
+
+    class TopupEntry : BaseColumns {
+        companion object {
+            val TABLE_NAME = "topup_table"
+            val COLUMN_ID = "id"
+            val COLUMN_USER_ID = "user_id"
+            val COLUMN_FEE = "fee"
+            val COLUMN_CREATED_DATE = "created_date"
         }
     }
 }
