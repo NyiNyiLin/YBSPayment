@@ -1,6 +1,7 @@
 package com.nyi.ybspayment.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.nyi.ybspayment.R
+import com.nyi.ybspayment.YbsPayment
 import com.nyi.ybspayment.adapters.TopupHistoryAddapter
 import com.nyi.ybspayment.adapters.TransactionHistoryAddapter
 import com.nyi.ybspayment.db.DBHelper
@@ -38,9 +40,14 @@ class TopupHistoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dbHelper = DBHelper(context)
+        dbHelper = DBHelper(YbsPayment.context)
+
 
         topupList = dbHelper.readAllTopup()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +59,8 @@ class TopupHistoryFragment : Fragment() {
         historyAdapter = TopupHistoryAddapter(topupList)
         rvList.setLayoutManager(LinearLayoutManager(context))
         rvList.setAdapter(historyAdapter)
+
+
 
         return v
     }

@@ -26,7 +26,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    buildVersion = '26.1.0'
+    buildVersion = '27.0.2'
     butterknifeVersion = '8.8.1'
     room_version = '1.1.0'
+    /*26.1.0*/
 }

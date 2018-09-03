@@ -19,6 +19,7 @@ import android.widget.Toast
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
+import com.nyi.ybspayment.activities.RegisterActivity
 import com.nyi.ybspayment.activities.scanner.ScannerActivity
 import com.nyi.ybspayment.activities.topup.TopupActivity
 import com.nyi.ybspayment.activities.transactionHistory.TransactionHistory
@@ -49,6 +50,9 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val intent = Intent(this, RegisterActivity::class.java);
+        startActivity(intent)
 
         setContentView(R.layout.activity_main)
         btnPay = findViewById<Button>(R.id.btn_pay);

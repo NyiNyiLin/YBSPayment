@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.nyi.ybspayment.R
+import com.nyi.ybspayment.YbsPayment
 import com.nyi.ybspayment.adapters.TransactionHistoryAddapter
 import com.nyi.ybspayment.db.DBHelper
 import com.nyi.ybspayment.db.model.TransactionModel
@@ -44,7 +45,7 @@ class TransactionHistoryFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }*/
 
-        dbHelper = DBHelper(context)
+        dbHelper = DBHelper(YbsPayment.context)
 
         transactionList = dbHelper.readAllTransaction()
     }
