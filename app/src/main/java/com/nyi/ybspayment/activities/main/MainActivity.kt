@@ -16,9 +16,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.budiyev.android.codescanner.CodeScanner
-import com.budiyev.android.codescanner.CodeScannerView
 import com.nyi.ybspayment.R
+import com.nyi.ybspayment.activities.EncryptionTestActivity
 import com.nyi.ybspayment.activities.RegisterActivity
 import com.nyi.ybspayment.activities.scanner.ScannerActivity
 import com.nyi.ybspayment.activities.topup.TopupActivity
@@ -35,8 +34,8 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
 
     var PERMISSIONS_CAMERA = 1;
 
-    private lateinit var scannerView : CodeScannerView;
-    private lateinit var codeScanner: CodeScanner
+    //private lateinit var scannerView : CodeScannerView;
+    //private lateinit var codeScanner: CodeScanner
     private lateinit var mainPresenter: MainPresenter
 
     private lateinit var mBottomSheetBehaviour: BottomSheetBehavior<*>
@@ -51,8 +50,10 @@ class MainActivity : AppCompatActivity(), MainContract.MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val intent = Intent(this, RegisterActivity::class.java);
-        startActivity(intent)
+        if(Constants.isLogin == Constants.LoginFalse) {
+            val intent = Intent(this, RegisterActivity::class.java);
+            startActivity(intent)
+        }
 
         setContentView(R.layout.activity_main)
         btnPay = findViewById<Button>(R.id.btn_pay);

@@ -44,17 +44,20 @@
             android:padding="@dimen/margin_medium">
 
             <EditText
+                android:id="@+id/et_phno"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your Phone No"
                 android:singleLine="true"
-                android:textColor="#000"
+                android:textColor="@color/colorWhite"
                 android:textColorHint="@color/colorAccent"
-                tools:text="09" />
+                tools:text="09"
+                android:inputType="phone"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Next"

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.EncryptionTestActivity"
+    tools:showIn="@layout/activity_encryption_test"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_gen_keypair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate Key Pair" />
+
+        <EditText
+            android:id="@+id/et_text_to_encrypt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="encryptText"/>
+
+        <Button
+            android:id="@+id/btn_encrypt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Encrypt" />
+
+        <TextView
+            android:id="@+id/tv_encrypted_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="encryptedText"/>
+
+        <Button
+            android:id="@+id/btn_decrypt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decrypt" />
+
+        <TextView
+            android:id="@+id/tv_decrypted_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="originalText"/>
+
+        <TextView
+            android:id="@+id/tv_privateKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_medium"
+            android:text="private"
+            android:textColor="@color/colorWhite" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorWhite"
+            android:layout_margin="@dimen/margin_large"/>
+        <TextView
+            android:id="@+id/tv_publicKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_medium"
+            android:text="public"
+            android:textColor="@color/colorWhite" />
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

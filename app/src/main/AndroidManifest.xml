@@ -41,7 +41,15 @@
         <activity
             android:name=".activities.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CodeFillActivity"
+            android:label="@string/title_activity_code_fill"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.EncryptionTestActivity"
+            android:label="@string/title_activity_encryption_test"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

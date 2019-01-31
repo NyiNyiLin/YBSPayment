@@ -17,5 +17,9 @@ class Constants {
 
         val argTopupAMount = "argTopupAMount"
         val RequestToTopupActivityCode = 111
+
+        var isLogin = 1;
+        val LoginTrue = 0;
+        val LoginFalse = 1;
     }
 }
